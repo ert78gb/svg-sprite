@@ -118,8 +118,6 @@
         "error",
         "always"
       ],
-      "prefer-rest-params": "off",
-      "prefer-spread": "off",
       "promise/prefer-await-to-then": "off",
       "space-before-function-paren": [
         "error",
