@@ -124,7 +124,6 @@
         "never"
       ],
       "spaced-comment": "off",
-      "unicorn/better-regex": "off",
       "unicorn/explicit-length-check": "off",
       "unicorn/no-array-for-each": "off",
       "unicorn/no-array-reduce": "off",
