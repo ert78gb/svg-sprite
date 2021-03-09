@@ -298,7 +298,7 @@ argv._.reduce((f, g) => [...f, ...glob.sync(g)], [])
         spriter.add(file, basename, fs.readFileSync(file));
     });
 
-spriter.compile((error, result /*, data*/) => {
+spriter.compile((error, result) => {
     if (error) {
         console.error(error);
     } else {

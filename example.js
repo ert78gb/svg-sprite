@@ -42,7 +42,7 @@ addFixtureFiles(spriter, files).compile({
             scss: true
         }
     }
-}, (error, result/*, cssData*/) => {
+}, (error, result) => {
     for (const type in result.css) {
         if (Object.prototype.hasOwnProperty.call(result.css, type)) {
             fs.mkdirSync(path.dirname(result.css[type].path), { recursive: true });
