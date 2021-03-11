@@ -106,14 +106,16 @@ function addConfigMap(store, path, value) {
  */
 function mergeConfig(from, to) {
 	for (var f in from) {
-		if (_.isObject(from[f])) {
-			if (!_.isObject(to[f])) {
-				to[f] = from[f];
+		if (Object.prototype.hasOwnProperty.call(from, f)) {
+			if (Object.prototype.hasOwnProperty.call(to, f) && _.isObject(from[f])) {
+				if (!_.isObject(to[f])) {
+					to[f] = from[f];
+				} else {
+					mergeConfig(from[f], to[f]);
+				}
 			} else {
-				mergeConfig(from[f], to[f]);
+				to[f] = from[f];
 			}
-		} else {
-			to[f] = from[f];
 		}
 	}
 }
@@ -142,7 +144,7 @@ function writeFiles(files) {
 
 // Get document, or throw exception on error
 try {
-	var options = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'config.yaml'), 'utf8'));
+	var options = yaml.load(fs.readFileSync(path.resolve(__dirname, 'config.yaml'), 'utf8'));
 	for (var name in options) {
 		addOption(name, options[name]);
 	}
