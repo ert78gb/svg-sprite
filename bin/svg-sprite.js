@@ -48,15 +48,15 @@ function addOption(name, option) {
     let alias = name;
 
     // If the this is an option itself
-    if ('description' in option) {
-        if ('alias' in option) {
+    if (Object.prototype.hasOwnProperty.call(option, 'description')) {
+        if (Object.prototype.hasOwnProperty.call(option, 'alias')) {
             alias = option.alias;
             yargs = yargs.alias(alias, name);
         }
 
         yargs = yargs.describe(alias, option.description);
 
-        if ('default' in option) {
+        if (Object.prototype.hasOwnProperty.call(option, 'default')) {
             const template = name.endsWith('-template');
             const def = template ? path.resolve(path.dirname(__dirname), option.default) : option.default;
             yargs = yargs.default(alias, def);
@@ -68,7 +68,7 @@ function addOption(name, option) {
             yargs = yargs.require(alias);
         }
 
-        if ('map' in option) {
+        if (Object.prototype.hasOwnProperty.call(option, 'map')) {
             optionsMap[option.map] = name;
         }
     }
@@ -89,7 +89,7 @@ function addOption(name, option) {
 function addConfigMap(store, path, value) {
     const key = path.shift();
     if (path.length) {
-        if (!(key in store) || !_.isObject(store[key])) {
+        if (!Object.prototype.hasOwnProperty.call(store, key) || !_.isObject(store[key])) {
             store[key] = {};
         }
 
@@ -158,7 +158,7 @@ const { argv } = yargs;
 
 // Map all arguments to a global configuration object
 for (const map in optionsMap) {
-    if (!(optionsMap[map] in argv)) {
+    if (!Object.prototype.hasOwnProperty.call(argv, optionsMap[map])) {
         continue;
     }
 
@@ -176,12 +176,12 @@ if (argv.config) {
 
         // Make a clone of initial config for options removal checks
         JSONConfig = JSON.parse(JSONConfigContent);
-        if (!('mode' in JSONConfig)) {
+        if (!Object.prototype.hasOwnProperty.call(JSONConfig, 'mode')) {
             JSONConfig.mode = {};
         }
 
         // Expand shorthand mode definitions
-        if ('mode' in externalConfig && _.isObject(externalConfig.mode)) {
+        if (Object.prototype.hasOwnProperty.call(externalConfig, 'mode') && _.isObject(externalConfig.mode)) {
             for (const emode in externalConfig.mode) {
                 if (externalConfig.mode[emode] === true) {
                     const defaultEmode = {
@@ -224,7 +224,7 @@ if (typeof config.shape.transform === 'string') {
     (transform.length ? transform.split(',').map(trans => String(trans).trim()) : [])
         .forEach(function(transform) {
             if (transform.length) {
-                if (('shape-transform-' + transform) in argv) {
+                if (Object.prototype.hasOwnProperty.call(argv, 'shape-transform-' + transform)) {
                     try {
                         const transformConfigFile = argv['shape-transform-' + transform];
                         const transformConfigJSON = fs.readFileSync(path.resolve(transformConfigFile), { encoding: 'utf8' });
@@ -240,7 +240,7 @@ if (typeof config.shape.transform === 'string') {
 
 // Run through all sprite modes
 ['css', 'view', 'defs', 'symbol', 'stack'].forEach(function(mode) {
-    if (!argv[mode] && !(mode in JSONConfig.mode)) {
+    if (!argv[mode] && !Object.prototype.hasOwnProperty.call(JSONConfig.mode, mode)) {
         delete this[mode];
         return;
     }
@@ -248,7 +248,7 @@ if (typeof config.shape.transform === 'string') {
     // Remove excessive render types
     ['css', 'scss', 'less', 'styl'].forEach(function(render) {
         const arg = mode + '-render-' + render;
-        if (render in this && !argv[arg] && (!(mode in JSONConfig.mode) || !('render' in JSONConfig.mode[mode]) || !(render in JSONConfig.mode[mode].render))) {
+        if (Object.prototype.hasOwnProperty.call(this, render) && !argv[arg] && (!Object.prototype.hasOwnProperty.call(JSONConfig.mode, mode) || !Object.prototype.hasOwnProperty.call(JSONConfig.mode[mode], 'render') || !Object.prototype.hasOwnProperty.call(JSONConfig.mode[mode].render, render))) {
             delete this[render];
         }
     }, this[mode].render);
@@ -261,13 +261,13 @@ if (typeof config.shape.transform === 'string') {
 // Remove excessive example options
 for (const mode in config.mode) {
     const example = mode + '-example';
-    if (!argv[example] && (!(mode in JSONConfig.mode) || !('example' in JSONConfig.mode[mode])) && 'example' in config.mode[mode]) {
+    if (!argv[example] && (!Object.prototype.hasOwnProperty.call(JSONConfig.mode, mode) || !Object.prototype.hasOwnProperty.call(JSONConfig.mode[mode], 'example')) && Object.prototype.hasOwnProperty.call(config.mode[mode], 'example')) {
         delete config.mode[mode].example;
     }
 }
 
 // Read & parse Mustache variable JSON file
-if ('variables' in config) {
+if (Object.prototype.hasOwnProperty.call(config, 'variables')) {
     let variables = String(config.variables).trim();
     delete config.variables;
     variables = variables.length ? path.resolve(variables) : null;
