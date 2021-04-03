@@ -28,7 +28,7 @@
   "scripts": {
     "lint": "xo",
     "fix": "npm run lint -- --fix",
-    "mocha": "_mocha --timeout 10000 test/svg-sprite.js",
+    "mocha": "_mocha --timeout 10000 test",
     "coverage": "c8 npm run mocha",
     "example": "node example.js",
     "test": "npm run mocha"
@@ -43,8 +43,8 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "mustache": "^4.2.0",
-    "phantomjs-prebuilt": "^2.1.16",
     "prettysize": "^2.0.0",
+    "puppeteer": "^8.0.0",
     "svgo": "^2.4.0",
     "vinyl": "^2.2.1",
     "winston": "^3.3.3",
@@ -60,7 +60,6 @@
     "sass": "^1.38.0",
     "should": "^13.2.3",
     "stylus": "^0.54.8",
-    "svg2png": "^4.1.1",
     "xo": "^0.44.0"
   },
   "keywords": [
@@ -149,21 +148,6 @@
         "envs": [
           "mocha"
         ]
-      },
-      {
-        "files": "**/*.phantom.js",
-        "envs": [
-          "phantomjs"
-        ],
-        "parserOptions": {
-          "ecmaVersion": 3,
-          "sourceType": "script"
-        },
-        "rules": {
-          "no-var": "off",
-          "prefer-arrow-callback": "off",
-          "prefer-template": "off"
-        }
       }
     ]
   }
