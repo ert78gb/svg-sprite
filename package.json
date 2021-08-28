@@ -28,7 +28,7 @@
   "scripts": {
     "lint": "xo",
     "fix": "npm run lint -- --fix",
-    "mocha": "_mocha --timeout 30000 test",
+    "mocha": "_mocha --timeout 10000 test",
     "coverage": "c8 npm run mocha",
     "example": "node example.js",
     "test": "npm run mocha"
@@ -44,7 +44,6 @@
     "lodash": "^4.17.21",
     "mustache": "^4.2.0",
     "prettysize": "^2.0.0",
-    "puppeteer-core": "^10.2.0",
     "svgo": "^2.4.0",
     "vinyl": "^2.2.1",
     "winston": "^3.3.3",
@@ -61,6 +60,9 @@
     "should": "^13.2.3",
     "stylus": "^0.54.8",
     "xo": "^0.44.0"
+  },
+  "peerDependencies": {
+    "puppeteer": "^10.2.0"
   },
   "keywords": [
     "icon",
