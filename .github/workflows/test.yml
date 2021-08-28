@@ -34,9 +34,6 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Install puppeteer
-        run: npm i puppeteer --no-save
-
       - name: Run example
         run: npm run example
 
