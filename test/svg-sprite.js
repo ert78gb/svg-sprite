@@ -111,7 +111,7 @@ async function capturePuppeteer(src, target, cb) {
             height: 1024,
             width: 1280
         });
-        await page.goto(`file://${src}`);
+        await page.goto(`file://${src}`, { waitUntil: 'networkidle0' });
         await page.screenshot({
             omitBackground: true,
             path: target,
