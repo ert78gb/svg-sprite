@@ -8,13 +8,18 @@ env:
 
 jobs:
   test:
-    name: Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
         node: [12, 14, 16]
+        include:
+          - os: windows-latest
+            node: 14
 
     steps:
       - name: Clone repository
@@ -34,21 +39,21 @@ jobs:
 
       - name: Run tests
         run: npm test
-        if: matrix.node != env.NODE_COV
+        if: "!(startsWith(matrix.os, 'ubuntu') && matrix.node == env.NODE_COV)"
 
       - name: Run tests with coverage
         run: npm run coverage
-        if: matrix.node == env.NODE_COV
+        if: startsWith(matrix.os, 'ubuntu') && matrix.node == env.NODE_COV
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: svg-sprite-ci-${{ matrix.node }}-${{ github.sha }}
+          name: svg-sprite-ci-${{ matrix.node }}-${{ matrix.os }}-${{ github.sha }}
           path: tmp/
 
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.node == env.NODE_COV
+        if: startsWith(matrix.os, 'ubuntu') && matrix.node == env.NODE_COV
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
